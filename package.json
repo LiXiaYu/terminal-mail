@@ -16,6 +16,72 @@
       {
         "command": "terminal-mail.sendTerminalOutput",
         "title": "send Terminal Output"
+      },
+      {
+        "command": "terminal-mail.nodemailer_setPassword",
+        "title": "Set Password"
+      }
+    ],
+    "configuration":[
+      {
+        "title": "Terminal Mail",
+        "properties": {
+          "terminal-mail.nodemailer_host": {
+            "title": "Nodemailer host",
+            "type": "string",
+            "default": "smtp.office365.com",
+            "description": "SMTP server host"
+          },
+          "terminal-mail.nodemailer_port": {
+            "title": "Nodemailer port",
+            "type": "number",
+            "default": 587,
+            "description": "SMTP server port"
+          },
+          "terminal-mail.nodemailer_user": {
+            "title": "Nodemailer user",
+            "type": "string",
+            "default": "xxx@outlook.com",
+            "description": "Email address to send mail from"
+          },
+          "terminal-mail.nodemailer_pass": {
+            "$id": "terminal-mail.nodemailer_pass",
+            "title": "Nodemailer pass",
+            "type": "string",
+            "scope": "window",
+            "description": "Password for email address"
+          },
+          "terminal-mail.nodemailer_secure": {
+            "title": "Nodemailer secure",
+            "type": "boolean",
+            "default": true,
+            "description": "Use secure connection"
+          },
+          "terminal-mail.nodemailer_tls_ciphers": {
+            "title": "Nodemailer tls ciphers",
+            "type": "string",
+            "default": "SSLv3",
+            "description": "TLS ciphers"
+          },
+          "terminal-mail.nodemailer_from": {
+            "title": "Email from",
+            "type": "string",
+            "default": "xxx@outlook.com",
+            "description": "Email show send mail from"
+          },
+          "terminal-mail.nodemailer_to": {
+            "title": "Email to",
+            "type": "string",
+            "default": "ewdo233o24m424224@126.com",
+            "description": "Email address to send mail to"
+          },
+          "terminal-mail.nodemailer_subject": {
+            "title": "Email subject",
+            "type": "string",
+            "default": "Terminal Mail",
+            "description": "Email subject"
+          }
+        }
       }
     ]
   },

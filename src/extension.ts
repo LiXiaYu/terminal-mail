@@ -5,45 +5,64 @@ import * as vscode from 'vscode';
 import * as nodemailer from 'nodemailer';
 
 
-// function send mail
-function sendMail(text: string) {
-	// Create a transporter object
-	let transporter = nodemailer.createTransport({
-		host: 'smtp.office365.com',
-		port: 587,
-		secure: false,
-		auth: {
-			user: 'xxx@outlook.com',
-			pass: 'xdkslfewpkls'
-		},
-		tls: {
-			ciphers:'SSLv3'
-		}
-	});
-
-	// Send a test email using the transporter object
-	transporter.sendMail({
-		from: 'xxx@outlook.com',
-		to: 'ewdo233o24m424224@126.com',
-		subject: 'email from vscode terminal mail extension',
-		text: text
-	}, (err, info) => {
-		if (err) {
-			// Show an error message if the email failed to send
-			console.error('Failed to send email: ' + err.message);
-			vscode.window.showInformationMessage('Failed to send email: ' + err.message);
-		} else {
-			// Show a success message if the email was sent successfully
-			console.log('Email sent successfully: ' + info.response);
-			vscode.window.showInformationMessage('Email sent successfully: ' + info.response);
-		}
-	});
-}
 
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
 	const channel = vscode.window.createOutputChannel('Terminal Mail');
+	
+	let config = vscode.workspace.getConfiguration('terminal-mail');
+	const secretStorage: vscode.SecretStorage = context.secrets;
+
+	// function send mail
+	async function sendMail(text: string) {
+		let pass: string| undefined = config.get('nodemailer_pass');
+		if (!pass) {
+            const password = await vscode.window.showInputBox({
+                prompt: 'Please enter password for email address',
+                password: true // 设置为密码框
+            });
+			if (password) {
+                // 将用户输入的密码保存在SecretStorage中
+                await secretStorage.store('nodemailer_pass_token', password);
+            }
+		
+			pass = await secretStorage.get('nodemailer_pass_token');
+		}
+		// Create a transporter object
+		let transporter = nodemailer.createTransport({
+			host: config.get('nodemailer_host'),
+			port: config.get('nodemailer_port'),
+			secure: config.get('nodemailer_secure'),
+			auth: {
+				user: config.get('nodemailer_user'),
+				pass: pass,
+			},
+			tls: {
+				ciphers: config.get('nodemailer_tls_ciphers')
+			}
+		});
+
+		// Send a test email using the transporter object
+		transporter.sendMail({
+			from: config.get('nodemailer_from'),
+			to: config.get('nodemailer_to'),
+			subject: config.get('nodemailer_subject'),
+			text: text
+		}, (err, info) => {
+			if (err) {
+				// Show an error message if the email failed to send
+				console.error('Failed to send email: ' + err.message);
+				vscode.window.showInformationMessage('Failed to send email: ' + err.message);
+			} else {
+				// Show a success message if the email was sent successfully
+				console.log('Email sent successfully: ' + info.response);
+				vscode.window.showInformationMessage('Email sent successfully: ' + info.response);
+			}
+		});
+}
+
+
 	// Use the console to output diagnostic information (console.log) and errors (console.error)
 	// This line of code will only be executed once when your extension is activated
 	console.log('Congratulations, your extension "terminal-mail" is now active!');
@@ -84,6 +103,18 @@ export function activate(context: vscode.ExtensionContext) {
 	});
 
 	context.subscriptions.push(disposable);
+
+
+	let disposable_pass = vscode.commands.registerCommand('terminal-mail.nodemailer_setPassword', async () => {
+		const passwordInput: string = await vscode.window.showInputBox({
+		  password: true, 
+		  title: "Password"
+		}) ?? '';
+		
+		secretStorage.store("server_password", passwordInput);
+	  });
+
+	context.subscriptions.push(disposable_pass);
 }
 
 // This method is called when your extension is deactivated

@@ -54,7 +54,7 @@
           "terminal-mail.nodemailer_secure": {
             "title": "Nodemailer secure",
             "type": "boolean",
-            "default": true,
+            "default": false,
             "description": "Use secure connection"
           },
           "terminal-mail.nodemailer_tls_ciphers": {

@@ -17,7 +17,7 @@ export function activate(context: vscode.ExtensionContext) {
 	// function send mail
 	async function sendMail(text: string) {
 		let pass: string| undefined = config.get('nodemailer_pass');
-		if (!pass) {
+		if (pass==="") {
             const password = await vscode.window.showInputBox({
                 prompt: 'Please enter password for email address',
                 password: true // 设置为密码框

@@ -4,8 +4,6 @@ import * as vscode from 'vscode';
 
 import * as nodemailer from 'nodemailer';
 
-
-
 // This method is called when your extension is activated
 // Your extension is activated the very first time the command is executed
 export function activate(context: vscode.ExtensionContext) {
@@ -115,6 +113,14 @@ export function activate(context: vscode.ExtensionContext) {
 	  });
 
 	context.subscriptions.push(disposable_pass);
+
+
+	let disposable_timer_send = vscode.commands.registerCommand('terminal-mail.terminal_context_timer_send', () => {
+		// 这里写您的功能按钮要执行的操作，例如弹出一个消息框
+		vscode.window.showInformationMessage('Hello World from My Command!');
+	  });
+	  // 把返回的 disposable 对象放到 context.subscriptions 中，以便在插件停用时自动释放资源
+	  context.subscriptions.push(disposable_timer_send);
 }
 
 // This method is called when your extension is deactivated

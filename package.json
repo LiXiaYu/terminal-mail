@@ -20,9 +20,13 @@
       {
         "command": "terminal-mail.nodemailer_setPassword",
         "title": "Set Password"
+      },
+      {
+        "command": "terminal-mail.terminal_context_timer_send",
+        "title": "Send terminal mail timer"
       }
     ],
-    "configuration":[
+    "configuration": [
       {
         "title": "Terminal Mail",
         "properties": {
@@ -83,7 +87,16 @@
           }
         }
       }
-    ]
+    ],
+    "menus": {
+      "terminal/title/context": [
+        {
+          "command": "terminal-mail.terminal_context_timer_send",
+          "group": "navigation",
+          "when": "terminalIsOpen"
+        }
+      ]
+    }
   },
   "scripts": {
     "vscode:prepublish": "npm run compile",
@@ -103,9 +116,7 @@
     "@vscode/test-cli": "^0.0.6",
     "@vscode/test-electron": "^2.3.9",
     "eslint": "^8.56.0",
-    "typescript": "^5.3.3"
-  },
-  "dependencies": {
-    "nodemailer": "^6.9.11"
+    "typescript": "^5.3.3",
+    "nodemailer": "^6.9.12"
   }
 }
